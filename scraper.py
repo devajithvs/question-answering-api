@@ -1,5 +1,5 @@
-from search_engine_parser.core.engines.bing import BingSearch
-from search_engine_parser.core.engines.google import GoogleSearch
+from search_engine_parser.core.engines.bing import Search as  BingSearch
+from search_engine_parser.core.engines.google import Search as GoogleSearch
     
 from googletrans import Translator
 translator = Translator()
