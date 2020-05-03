@@ -1,6 +1,6 @@
 FROM tensorflow/tensorflow:latest-py3
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir \
+RUN apt-get install git
+RUN python3 -m pip install --no-cache-dir \
     transformers \
     googletrans \
     git+https://github.com/devajithvs/search-engine-parser.git
