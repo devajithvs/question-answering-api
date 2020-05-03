@@ -11,6 +11,6 @@ RUN mkdir src
 RUN cd src
 RUN mkdir model
 RUN ls -la
-RUN python "src/downloader.py"
+RUN python downloader.py
 COPY . /src
 CMD [ "python", "-u", "src/scraper.py" ]
