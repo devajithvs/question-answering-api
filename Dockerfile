@@ -6,6 +6,7 @@ RUN python -m pip install --no-cache-dir \
     transformers \
     googletrans
     # git+https://github.com/devajithvs/search-engine-parser.git
+WORKDIR ~/docker/question-answering-api
 RUN mkdir src
 RUN cd src
 RUN mkdir model
