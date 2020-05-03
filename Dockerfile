@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster
+FROM python:3.7
 RUN pip install cdqa
 RUN pip install googletrans
 RUN pip install 'git+https://github.com/devajithvs/search-engine-parser.git'
