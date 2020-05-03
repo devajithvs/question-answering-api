@@ -1,7 +1,7 @@
 FROM tensorflow/tensorflow:latest-py3
-RUN pip3 install tensorflow-cpu \
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir \
     transformers \
-    torch \
     googletrans \
     git+https://github.com/devajithvs/search-engine-parser.git
 RUN mkdir src

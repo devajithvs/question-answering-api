@@ -1,11 +1,10 @@
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering
-import torch
+from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
 import os
-os.mkdir("/model/")
 
 if __name__ == '__main__':
     print("Downloading...")
-    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-distilled-squad")
-    tokenizer.save_pretrained("/model")
-    model = AutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased-distilled-squad")
-    model.save_pretrained("/model")
+    os.mkdir("/content/model/")
+	tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-distilled-squad")
+	tokenizer.save_pretrained("/content/model")
+	model = TFAutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased-distilled-squad")
+	model.save_pretrained("/content/model")
