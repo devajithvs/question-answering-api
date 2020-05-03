@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-py3
+FROM tensorflow/tensorflow:latest
 RUN apt-get install git -y
 RUN python3 -m pip install --no-cache-dir \
     transformers \
