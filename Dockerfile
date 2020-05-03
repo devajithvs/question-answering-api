@@ -1,5 +1,5 @@
-FROM python:3
-RUN pip install tensorflow-cpu \
+FROM tensorflow/tensorflow:latest-py3
+RUN pip3 install tensorflow-cpu \
     transformers \
     torch \
     googletrans \
