@@ -1,10 +1,5 @@
-from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
-import os
+from cdqa.utils.download import download_model
 
 if __name__ == '__main__':
     print("Downloading...")
-    os.mkdir("/content/model/")
-	tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-distilled-squad")
-	tokenizer.save_pretrained("/content/model")
-	model = TFAutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased-distilled-squad")
-	model.save_pretrained("/content/model")
+	download_model(model='distilbert-squad_1.1', dir='./models')
