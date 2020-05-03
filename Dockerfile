@@ -4,7 +4,7 @@ RUN apt-get install git -y
 RUN python -m pip install --upgrade pip 
 RUN python -m pip install --no-cache-dir \
     transformers \
-    googletrans \
+    googletrans
     # git+https://github.com/devajithvs/search-engine-parser.git
 RUN mkdir src
 RUN cd src
