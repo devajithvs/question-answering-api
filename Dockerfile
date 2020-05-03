@@ -1,7 +1,8 @@
 FROM tensorflow/tensorflow:latest
 RUN apt-get update
 RUN apt-get install git -y
-RUN python -m pip install --no-cache-dir \
+RUN pip3 install --upgrade pip
+RUN pip3 install --no-cache-dir \
     transformers \
     googletrans \
     git+https://github.com/devajithvs/search-engine-parser.git
