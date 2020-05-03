@@ -9,6 +9,7 @@ RUN python -m pip install --no-cache-dir \
 RUN mkdir src
 RUN cd src
 RUN mkdir model
+RUN ls -la
 RUN python "src/downloader.py"
 COPY . /src
 CMD [ "python", "-u", "src/scraper.py" ]
