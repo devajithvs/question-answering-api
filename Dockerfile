@@ -11,3 +11,4 @@ RUN ls -la
 RUN python ./downloader.py
 COPY . /src
 CMD [ "python", "-u", "src/scraper.py" ]
+# l?
