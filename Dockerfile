@@ -1,5 +1,5 @@
 FROM tensorflow/tensorflow:latest-py3
-RUN apt-get install git
+RUN apt-get install git -y
 RUN python3 -m pip install --no-cache-dir \
     transformers \
     googletrans \
