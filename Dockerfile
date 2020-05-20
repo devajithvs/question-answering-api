@@ -7,6 +7,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     googletrans \
     git+https://github.com/devajithvs/search-engine-parser.git
 WORKDIR /home/devajith/question-answering-api
+RUN mkdir test
 RUN ls -la
 RUN python ./downloader.py
 COPY . /src
