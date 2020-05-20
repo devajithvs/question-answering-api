@@ -26,7 +26,6 @@ def get_answer(query, context):
     print(f"Answer: {answer}\n")
     return answer
 
-
 def translate(question):
     translator = Translator()
     question = question.replace('.', '')
