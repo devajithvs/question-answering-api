@@ -7,6 +7,11 @@ from search_engine_parser.core.engines.bing import Search as BingSearch
 from googletrans import Translator
 import os
 
+print("Working")
+print(os.listdir())
+model = TFAutoModelForQuestionAnswering.from_pretrained('model')
+tokenizer = AutoTokenizer.from_pretrained("model")
+
 def get_answer(query, context):
     inputs = tokenizer.encode_plus(query, context, add_special_tokens=True, return_tensors="tf")
     input_ids = inputs["input_ids"].numpy()[0]
@@ -52,17 +57,18 @@ def search_bing(query):
     dresults = dsearch.search(*search_args)
     context = ' '.join(dresults["descriptions"][0:5])
     context = context.replace('...', '')
-    return get_answer(query, context) 
+    return get_answer(query, context)
 
-if __name__ == '__main__':
-    print("Working")
-    print(os.listdir())
-
-    model = TFAutoModelForQuestionAnswering.from_pretrained('model')
-    tokenizer = AutoTokenizer.from_pretrained("model")
-
-    question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
+def solution(question):
     query = translate(question)
+    answers = [search_google(query), search_bing(query)]
+    return answers
 
-    search_google(query)
-    search_bing(query)
+
+# if __name__ == '__main__':
+
+#     question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
+#     query = translate(question)
+
+#     search_google(query)
+#     search_bing(query)

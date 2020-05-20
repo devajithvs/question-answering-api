@@ -5,7 +5,9 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir \
     transformers \
     googletrans \
-    git+https://github.com/devajithvs/search-engine-parser.git
+    Flask \
+    git+https://github.com/devajithvs/search-engine-parser.git \
+
 
 COPY . ~/question-answering-api
 WORKDIR ~/question-answering-api
