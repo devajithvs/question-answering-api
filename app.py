@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # home page
 @app.route('/<question>', methods=['GET'])
-def home():
+def home(question):
     answer = solution(question)
     print(answer)
     return answer
