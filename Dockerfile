@@ -1,4 +1,6 @@
 FROM tensorflow/tensorflow:latest-py3
+RUN apt-get update && \
+    apt-get install -y git
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir \
     transformers \
