@@ -4,12 +4,10 @@ from scraper import *
 
 app = Flask(__name__)
 
-
-
 # home page
 @app.route('/', methods=['GET'])
 def home():
-    question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
+    question = 'Predident of India'
     answer = solution(question)
     print(answer)
     return answer

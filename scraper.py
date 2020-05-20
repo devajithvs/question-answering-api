@@ -39,36 +39,28 @@ def translate(question):
     return query
 
 def search_google(query):
-    search_args = (query, 0)
     dsearch = GoogleSearch()
-    dresults = dsearch.search(*search_args)
+    dresults = dsearch.search(query, 0)
     if dresults["direct_answer"]:
         answer = dresults["direct_answer"]
         print(f"Question: {query}")
         print(f"Answer: {answer}\n")
+        return answer
     else:
         context = ' '.join(dresults["descriptions"][0:5])
         context = context.replace('...', '')
         return get_answer(query, context)
 
 def search_bing(query):
-    search_args = (query, 0)
     dsearch = BingSearch()
-    dresults = dsearch.search(*search_args)
+    dresults = dsearch.search(query, 0)
     context = ' '.join(dresults["descriptions"][0:5])
     context = context.replace('...', '')
     return get_answer(query, context)
 
 def solution(question):
     query = translate(question)
-    answers = [search_google(query), search_bing(query)]
-    return answers
-
-
-# if __name__ == '__main__':
-
-#     question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
-#     query = translate(question)
-
-#     search_google(query)
-#     search_bing(query)
+    answers = dict();  
+    answers['google'] = search_google(query)
+    answers['bing'] = search_bing(query)
+    return answers 

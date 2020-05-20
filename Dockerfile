@@ -6,7 +6,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     transformers \
     googletrans \
     Flask \
-    git+https://github.com/devajithvs/search-engine-parser.git \
+    git+https://github.com/devajithvs/search-engine-parser.git
 
 
 COPY . ~/question-answering-api
@@ -15,4 +15,4 @@ RUN mkdir test
 RUN ls -la
 RUN python ./downloader.py
 COPY . /src
-CMD [ "python", "-u", "scraper.py" ]
+CMD [ "python", "-u", "app.py" ]
