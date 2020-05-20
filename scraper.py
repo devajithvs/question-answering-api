@@ -1,60 +1,69 @@
-import os
-import pandas as pd
-from ast import literal_eval
-from cdqa.utils.filters import filter_paragraphs
-from cdqa.pipeline import QAPipeline
+from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
+import tensorflow as tf
+
 from search_engine_parser.core.engines.google import Search as GoogleSearch
 from search_engine_parser.core.engines.bing import Search as BingSearch
 
-def get_answer(query, df):
-  cdqa_pipeline = QAPipeline(reader='./models/distilbert_qa.joblib')
-  cdqa_pipeline.fit_retriever(df=df)
-  prediction = cdqa_pipeline.predict(query)
-  print('query: {}'.format(query))
-  print('answer: {}'.format(prediction[0]))
-  # print('title: {}'.format(prediction[1]))
-  print('paragraph: {}'.format(prediction[2]))
+from googletrans import Translator
+import os
 
-def pad_dict_list(dict_list, padel):
-    lmax = 0
-    for lname in dict_list.keys():
-        lmax = max(lmax, len(dict_list[lname]))
-    for lname in dict_list.keys():
-        ll = len(dict_list[lname])
-        if  ll < lmax:
-            dict_list[lname] += [padel] * (lmax - ll)
-    return dict_list
+def get_answer(query, context):
+    inputs = tokenizer.encode_plus(query, context, add_special_tokens=True, return_tensors="tf")
+    input_ids = inputs["input_ids"].numpy()[0]
 
-def search_google(query):
-  search_args = (query, 0)
-  dsearch = GoogleSearch()
-  dresults = dsearch.search(*search_args)
-  if dresults["direct_answer"]:
-    answer = dresults["direct_answer"]
+    text_tokens = tokenizer.convert_ids_to_tokens(input_ids)
+    answer_start_scores, answer_end_scores = model(inputs)
+
+    # Get the most likely beginning of answer with the argmax of the score
+    answer_start = tf.argmax(answer_start_scores, axis=1).numpy()[0]
+
+    # Get the most likely end of answer with the argmax of the score
+    answer_end = (tf.argmax(answer_end_scores, axis=1) + 1).numpy()[0]
+
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(input_ids[answer_start:answer_end]))
+
     print(f"Question: {query}")
     print(f"Answer: {answer}\n")
-  else:
-    dict = {"title":dresults["titles"], "paragraphs":[[i] for i in dresults["descriptions"]]}
-    dict = pad_dict_list(dict, "[]")
-    df = pd.DataFrame(dict) 
-    df.to_csv('file1.csv') 
-    df = pd.read_csv('file1.csv', converters={'paragraphs': literal_eval})
-    get_answer(query, df)
+    return answer
+
+
+def translate(question):
+    translator = Translator()
+    question = question.replace('.', '')
+    query = translator.translate(question).text
+    query += ''
+    return query
+
+def search_google(query):
+    search_args = (query, 0)
+    dsearch = GoogleSearch()
+    dresults = dsearch.search(*search_args)
+    if dresults["direct_answer"]:
+        answer = dresults["direct_answer"]
+        print(f"Question: {query}")
+        print(f"Answer: {answer}\n")
+    else:
+        context = ' '.join(dresults["descriptions"][0:5])
+        context = context.replace('...', '')
+        return get_answer(query, context)
 
 def search_bing(query):
-  search_args = (query, 0)
-  dsearch = BingSearch()
-  dresults = dsearch.search(*search_args)
-  dict = {"title":dresults["titles"], "paragraphs":[[i] for i in dresults["descriptions"]]}
-  dict = pad_dict_list(dict, "[]")
-  df = pd.DataFrame(dict)
-  df.to_csv('file1.csv') 
-  df = pd.read_csv('file1.csv', converters={'paragraphs': literal_eval})
-  get_answer(query, df)
+    search_args = (query, 0)
+    dsearch = BingSearch()
+    dresults = dsearch.search(*search_args)
+    context = ' '.join(dresults["descriptions"][0:5])
+    context = context.replace('...', '')
+    return get_answer(query, context) 
 
 if __name__ == '__main__':
     print("Working")
+    print(os.listdir())
 
-    query = 'Who got the 1st or 2nd medal?'
+    model = TFAutoModelForQuestionAnswering.from_pretrained('/content/model')
+    tokenizer = AutoTokenizer.from_pretrained("/content/model")
+
+    question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
+    query = translate(question)
+
     search_google(query)
     search_bing(query)

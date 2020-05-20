@@ -1,8 +1,9 @@
-FROM python:3.7
-RUN pip install cdqa
-RUN pip install googletrans
-RUN pip install 'git+https://github.com/devajithvs/search-engine-parser.git'
-
+FROM tensorflow/tensorflow:latest-py3
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir \
+    transformers \
+    googletrans \
+    git+https://github.com/devajithvs/search-engine-parser.git
 WORKDIR ~/docker/question-answering-api
 RUN mkdir src
 RUN cd src
@@ -11,4 +12,3 @@ RUN ls -la
 RUN python ./downloader.py
 COPY . /src
 CMD [ "python", "-u", "src/scraper.py" ]
-# l?
