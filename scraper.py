@@ -59,8 +59,8 @@ if __name__ == '__main__':
     print("Working")
     print(os.listdir())
 
-    model = TFAutoModelForQuestionAnswering.from_pretrained('/content/model')
-    tokenizer = AutoTokenizer.from_pretrained("/content/model")
+    model = TFAutoModelForQuestionAnswering.from_pretrained('model')
+    tokenizer = AutoTokenizer.from_pretrained("model")
 
     question = '"സംസ്ഥാന പൊതുവിദ്യാഭ്യാസ വകുപ്പ് രൂപം നൽകിയ പദ്ധതി?'
     query = translate(question)
