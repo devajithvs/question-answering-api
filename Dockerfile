@@ -4,7 +4,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     transformers \
     googletrans \
     git+https://github.com/devajithvs/search-engine-parser.git
-WORKDIR ~/docker/question-answering-api
+WORKDIR ~/question-answering-api
 RUN mkdir src
 RUN cd src
 RUN mkdir model
