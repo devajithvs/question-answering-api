@@ -5,9 +5,8 @@ from scraper import *
 app = Flask(__name__)
 
 # home page
-@app.route('/', methods=['GET'])
+@app.route('/<question>', methods=['GET'])
 def home():
-    question = 'Predident of India'
     answer = solution(question)
     print(answer)
     return answer
