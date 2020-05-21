@@ -2,7 +2,6 @@ from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
 import tensorflow as tf
 
 from search_engine_parser.core.engines.google import Search as GoogleSearch
-from search_engine_parser.core.engines.bing import Search as BingSearch
 
 from googletrans import Translator
 import os
@@ -51,16 +50,21 @@ def search_google(query):
         context = context.replace('...', '')
         return get_answer(query, context)
 
-def search_bing(query):
-    dsearch = BingSearch()
-    dresults = dsearch.search(query, 0)
-    context = ' '.join(dresults["descriptions"][0:5])
+def search_google_native_lang(query):
+    search_args = (query, 0)
+    dsearch = GoogleSearch()
+    dresults = dsearch.search(*search_args)
+    context = ' '.join(dresults["descriptions"][0:2])
     context = context.replace('...', '')
-    return get_answer(query, context)
+    context = translate(context)
+    answer = dresults["titles"][0].replace('...', '') + "\n" + dresults["descriptions"][0].replace('...', '')
+    return [answer, get_answer(translate(query), context)]
 
 def solution(question):
     query = translate(question)
-    answers = dict();  
+    answer_native = search_google_native_lang(question)
+    answers = dict();
+    answers['first_result'] = answer_native[0]
+    answers['translate_result'] = answer_native[1]
     answers['google'] = search_google(query)
-    answers['bing'] = search_bing(query)
     return answers 
